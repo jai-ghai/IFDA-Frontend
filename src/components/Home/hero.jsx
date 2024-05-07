@@ -1,5 +1,6 @@
 import * as React from 'react';
-import introVideo from "../../assests/videos/intro.mp4"
+// import introVideo from "../../assests/videos/intro.mp4"
+import mainVideo  from "../../assests/videos/Final.mp4"
 import {
   chakra,
   Container,
@@ -88,17 +89,6 @@ const Hero = () => {
         <Box ml={{ base: 0, md: 5 }} pos="relative">
           <DottedBox />
           <MainVideo/>
-          
-          {/* <Image
-            w="100%"
-            h="100%"
-            minW={{ base: 'auto', md: '30rem' }}
-            objectFit="cover"
-            src={`https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&q=80&
-            fm=jpg&crop=entropy&cs=tinysrgb&auto=format&fit=crop&w=334&q=80`}
-            rounded="md"
-            fallback={<Skeleton />}
-          /> */}
         </Box>
       </Stack>
     </Container>
@@ -141,14 +131,13 @@ const MainVideo = (()=>{
             objectfit="cover"
             rounded="md"
             fallback={<Skeleton />}
-            // autoPlay
+            autoPlay
             controls 
             controlsList='nodownload nofullscreen noremoteplayback'
             disablePictureInPicture
             disableRemotePlayback
-            autoPlay
             muted
-            src={introVideo}>
+            src={mainVideo}>
             </video>
         </div>
     )

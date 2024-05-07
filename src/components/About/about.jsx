@@ -1,7 +1,8 @@
 import { Avatar, Box, Button, Container, HStack, Heading, Stack, Text, VStack } from '@chakra-ui/react'
 import React from 'react';
 import {Link} from 'react-router-dom';
-import introVideo from './../../assests/videos/intro.mp4'
+// import introVideo from './../../assests/videos/intro.mp4'
+import mainVideo  from "../../assests/videos/Final.mp4"
 import { RiSecurePaymentFill } from 'react-icons/ri';
 import termsAndCondition from '../../assests/docs/termsAndCondition'
 
@@ -23,12 +24,12 @@ const VideoPlayer = () =>(
     <Box>
         <video
             autoPlay
-            muted
+            // muted
             controls 
             controlsList='nodownload nofullscreen noremoteplayback'
             disablePictureInPicture
             disableRemotePlayback
-            src={introVideo}>
+            src={mainVideo}>
             </video>
     </Box>
 )
@@ -53,7 +54,7 @@ const About = () => {
             <Text fontFamily={'cursive'} textAlign={['center','left']} m={'8'} children="We are the video streaming platform with some premium courses available only for premium users"/>
 
             <Link to="/subscribe">
-                <Button variant={'ghost'} colorScheme='yellow'>Checkout Our Plan </Button>
+                <Button variant={'ghost'} colorScheme='blue'>Checkout Our Plan </Button>
             </Link>
         </Stack>
         <VideoPlayer/>

@@ -16,62 +16,129 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
+import { useDispatch, useSelector } from 'react-redux';
 import cursor from '../../../assests/images/cursor.png';
 import Sidebar from '../Sidebar';
 import CourseModal from './CourseModal';
-
-
+import {
+  getAllCourses,
+  getCourseModules,
+} from '../../../redux/actions/course';
+import {
+  addLecture,
+  deleteCourse,
+  deleteLecture,
+} from '../../../redux/actions/admin';
+import toast from 'react-hot-toast';
+// import axios from 'axios';
 
 const AdminCourses = () => {
- 
+  const { courses, modules } = useSelector(state => state.course);
+  const lectures = modules ? modules.flatMap(module => module.lectures) : [];
+  const { loading, error, message } = useSelector(state => state.admin);
 
-  const courses = [{
-    _id: "affvghfghfdghdfsghdf",
-    title: "react course",
-    category: "web development",
-    poster:{
-      url:"https://cdn.pixabay.com/photo/2020/05/05/12/12/coffee-5132832_1280.jpg"
-    },
-    createdBy:"jai",
-    views:123,
-    numOfVideos:12
-  }];
-
-
+  const dispatch = useDispatch();
 
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const [courseId, setCourseId] = useState('');
   const [courseTitle, setCourseTitle] = useState('');
 
-  const coureDetailsHandler =userId =>{
+  const coureDetailsHandler = (courseId, title) => {
+    dispatch(getCourseModules(courseId));
     onOpen();
-  }
-
- 
+    setCourseId(courseId);
+    setCourseTitle(title);
+  };
   const deleteButtonHandler = courseId => {
     console.log(courseId);
+    dispatch(deleteCourse(courseId));
   };
 
   const deleteLectureButtonHandler = async (courseId, lectureId) => {
-    console.log(courseId);
-    console.log(lectureId);
+    await dispatch(deleteLecture(courseId, lectureId));
+    dispatch(getCourseModules(courseId));
   };
 
-  const addLectureHandler = async (e, courseId, title, description, video) => {
-    e.preventDefault();
-    // const myForm = new FormData();
 
-    // myForm.append('title', title);
-    // myForm.append('description', description);
-    // myForm.append('file', video);
 
-    // await dispatch(addLecture(courseId, myForm));
-    // dispatch(getCourseLectures(courseId));
+// const requestPresignedUrl = async (file) => {
+//   try {
+//     const response = await axios.post(
+//       'https://lms.ifda.in/api/v1/generate-presigned-url',
+//       {
+//         file_name: file.name,
+//       },
+//       {
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         withCredentials: true,
+//       }
+//     );
+
+//     const { presignedUrl, key } = response.data;
+
+//     await uploadFileToPresignedUrl(file, presignedUrl);
+
+//     return key;
+//   } catch (error) {
+//     console.error('Error fetching presigned URL:', error);
+//     toast.error('Error fetching presigned URL. Please try again.');
+//   }
+// };
+
+// const uploadFileToPresignedUrl = async (file, url) => {
+//   try {
+//     const response = await fetch(url, {
+//       method: 'PUT',
+//       body: file,
+//       headers: {
+//         'Content-Type': file.type,
+//       },
+//     });
+
+//     if (!response.ok) throw new Error('Failed to upload file.');
+
+//     toast.success('File uploaded successfully.');
+//   } catch (error) {
+//     console.error('Error uploading file:', error);
+//     toast.error('Error uploading file. Please try again.');
+//   }
+// };
+
+const addLectureHandler = async (e, courseId, title, description, file, moduleId) => {
+  e.preventDefault();
+  const formDataObject = {
+    title: title,
+    description: description,
+    file: file,
   };
 
-  
+  if (!file) {
+    toast.error('Please select a file first.');
+    return;
+  }
+  await dispatch(addLecture(courseId, moduleId, formDataObject));
+  dispatch(getCourseModules(courseId));
+};
+
+useEffect(() => {
+  if (error) {
+    toast.error(error);
+    dispatch({ type: 'clearError' });
+  }
+
+  if (message) {
+    toast.success(message);
+    dispatch({ type: 'clearMessage' });
+  }
+
+  dispatch(getAllCourses());
+}, [dispatch, error, message, onClose]);
+
   return (
     <Grid
       css={{
@@ -112,7 +179,7 @@ const AdminCourses = () => {
                   deleteButtonHandler={deleteButtonHandler}
                   key={item._id}
                   item={item}
-                  loading={""}
+                  loading={loading}
                 />
               ))}
             </Tbody>
@@ -126,8 +193,10 @@ const AdminCourses = () => {
           courseTitle={courseTitle}
           deleteButtonHandler={deleteLectureButtonHandler}
           addLectureHandler={addLectureHandler}
-          lectures={"lectures"}
-          loading={""}
+          lectures={lectures}
+          modules = {modules}
+          loading={loading}
+          courses = {courses}
         />
       </Box>
 
@@ -162,6 +231,7 @@ function Row({ item, coureDetailsHandler, deleteButtonHandler, loading }) {
             View Lectures
           </Button>
 
+          
           <Button
             onClick={() => deleteButtonHandler(item._id)}
             color={'purple.600'}

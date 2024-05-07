@@ -26,6 +26,7 @@ ChartJS.register(
 export const LineChart = ({ views = [] }) => {
   const labels = getLastYearMonths();
 
+
   const options = {
     responsive: true,
     plugins: {

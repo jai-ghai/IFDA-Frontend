@@ -1,19 +1,27 @@
-import { Box, Button, Container, FormLabel, Heading, Input, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Container,
+  FormLabel,
+  Heading,
+  Input,
+  VStack,
+} from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { login } from '../../redux/actions/user';
 
 const Login = () => {
-    const [email,setEmail] = useState('');
-    const [password,setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const submitHandler = async (e) => {
-      e.preventDefault();
-      await dispatch(login({ email, password }));
-    };
+  const submitHandler = e => {
+    e.preventDefault();
+    dispatch(login(email, password));
+  };
 
   return (
     <Container h={'95vh'} >
@@ -29,7 +37,7 @@ const Login = () => {
           value={email}
           onChange={e => setEmail(e.target.value)}
           placeholder="abc@gmail.com"
-          focusBorderColor="yellow.500"
+          focusBorderColor="blue.500"
         />
         </Box>
 
@@ -42,7 +50,7 @@ const Login = () => {
           value={password}
           onChange={e => setPassword(e.target.value)}
           placeholder="Enter your password"
-          focusBorderColor="yellow.500"
+          focusBorderColor="blue.500"
         />
         </Box>
 
@@ -52,11 +60,11 @@ const Login = () => {
           </Link>
         </Box>
 
-        <Button colorScheme='yellow' my={'4'} type='submit'>Login</Button>
+        <Button colorScheme='blue' my={'4'} type='submit'>Login</Button>
 
         <Box my={4}>
         New user? <Link to={'/register'}>
-        <Button colorScheme='yellow' variant={'link'}>Sign Up
+        <Button colorScheme='blue' variant={'link'}>Sign Up
         </Button>{" "}here
         </Link>
         </Box>

@@ -13,17 +13,25 @@ import {
   HStack,
 } from '@chakra-ui/react';
 import { RiDashboardFill, RiLogoutBoxLine, RiMenu5Fill } from 'react-icons/ri';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../../redux/actions/user';
 
+const LinkButton = ({ url = '/', title = 'Home' , onClose }) => (
+  <Link onClick={onClose} to={url}>
+    <Button variant={'ghost'}>{title}</Button>
+  </Link>
+);
 
-
-function Header({isAuthenticated = false, user}) {
+const Header = ({isAuthenticated = false, user}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const dispatch = useDispatch();
 
 
   const logoutHandler = () =>{
-    console.log("logout");
     onClose();
-  }
+    dispatch(logout());
+  };
 
   return (
     <>
@@ -65,7 +73,7 @@ function Header({isAuthenticated = false, user}) {
                     <VStack>
                       <HStack>
                         <Link onClick={onClose} to="/profile">
-                          <Button variant={'ghost'} colorScheme={'yellow'}>
+                          <Button variant={'ghost'} colorScheme={'blue'}>
                             Profile
                           </Button>
                         </Link>
@@ -89,11 +97,11 @@ function Header({isAuthenticated = false, user}) {
                 ) : (
                   <>
                     <Link onClick={onClose} to="/login">
-                      <Button colorScheme="yellow">Login</Button>
+                      <Button colorScheme="blue">Login</Button>
                     </Link>
                     <p>OR</p>
                     <Link onClick={onClose} to="/register">
-                      <Button colorScheme="yellow">Sign Up</Button>
+                      <Button colorScheme="blue">Sign Up</Button>
                     </Link>
                   </>
                 )}
@@ -109,8 +117,3 @@ function Header({isAuthenticated = false, user}) {
 export default Header;
 
 
-const LinkButton = ({ url = '/', title = 'Home' , onClose={onClose} }) => (
-  <Link onClick={onClose} to={url}>
-    <Button variant={'ghost'}>{title}</Button>
-  </Link>
-);

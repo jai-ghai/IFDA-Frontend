@@ -1,5 +1,14 @@
 import { Button, VStack } from '@chakra-ui/react';
 import React from 'react';
+// import { GiPoliceBadge } from "react-icons/gi";
+// import { GrValidate } from "react-icons/gr";
+import { FaCcPaypal } from "react-icons/fa";
+// import { IoTvOutline } from "react-icons/io5";
+// import { MdConnectedTv } from "react-icons/md";
+
+
+
+
 import {
   RiAddCircleFill,
   RiDashboardFill,
@@ -25,6 +34,25 @@ const Sidebar = () => {
         active={location.pathname === '/admin/createcourse'}
       />
       <LinkButton
+        Icon={RiAddCircleFill}
+        text="Update Course"
+        url={'updatecourse'}
+        active={location.pathname === '/admin/updatecourse '}
+      />
+      <LinkButton
+        Icon={RiAddCircleFill}
+        text="Create Module"
+        url={'createmodule'}
+        active={location.pathname === '/admin/createmodule '}
+      />
+      <LinkButton
+        Icon={RiAddCircleFill}
+        text="Create Test"
+        url={'createtest'}
+        active={location.pathname === '/admin/createtest '}
+      />
+
+      <LinkButton
         Icon={RiEyeFill}
         text="Courses"
         url={'courses'}
@@ -35,6 +63,12 @@ const Sidebar = () => {
         text="Users"
         url={'users'}
         active={location.pathname === '/admin/users'}
+      />
+      <LinkButton
+        Icon={FaCcPaypal}
+        text="Access"
+        url={'access'}
+        active={location.pathname === '/admin/access'}
       />
     </VStack>
   );
