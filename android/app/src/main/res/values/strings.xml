@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">IFDAApp</string>
+    <string name="title_activity_main">IFDAApp</string>
+    <string name="package_name">com.Ifda.myapp</string>
+    <string name="custom_url_scheme">com.Ifda.myapp</string>
+</resources>

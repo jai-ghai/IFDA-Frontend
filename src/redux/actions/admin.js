@@ -306,23 +306,101 @@ export const uploadFileToPresignedUrl = (file, url) => async () => {
   }
 };
 
+// module delete 
+export const deleteModule = (courseId, moduleId) => async (dispatch) => {
+  try {
+    const config = {
+      withCredentials: true,
+    };
+    dispatch({ type: 'deleteModuleRequest' });
+
+    const { data } = await axios.delete(`${server}/course/${courseId}/${moduleId}`, config);
+
+    dispatch({ type: 'deleteModuleSuccess', payload: data.message });
+  } catch (error) {
+    dispatch({
+      type: 'deleteModuleFail',
+      payload: error.response.data.message,
+    });
+  }
+};
+
+
+
+
 
 
 // update course
+// export const updateCourse = updatedCourse => async dispatch => {
+//   try {
+//     const config = {
+//       withCredentials: true,
+//     };
+//     // const formData = new FormData();
+//     // for (const key in updatedCourse) {
+//     //   formData.append(key, updatedCourse[key]);
+//     // }
+//     // console.log(formData);
+
+//     dispatch({ type: 'updateCourseRequest' });
+
+//     const { data } = await axios.put(`${server}/course/${updatedCourse._id}`, updatedCourse,config);
+
+//     dispatch({ type: 'updateCourseSuccess', payload: data.message });
+//   } catch (error) {
+//     dispatch({
+//       type: 'updateCourseFail',
+//       payload: error.response.data.message,
+//     });
+//   }
+// };
+
+
 export const updateCourse = (updatedCourse) => async (dispatch) => {
   try {
-    dispatch({ type: UPDATE_COURSE_REQUEST });
-    
-    // Perform the API request to update the course
-    const response = await axios.put(`/api/courses/${updatedCourse._id}`, updatedCourse);
+    const config = {
+      withCredentials: true,
+    };
 
-    dispatch({
-      type: UPDATE_COURSE_SUCCESS,
-      payload: response.data,
-    });
+    dispatch({ type: 'updateCourseRequest' });
+
+    if(updatedCourse.file){
+      // Request presigned URL for uploading the new poster image
+    const key = await dispatch(requestPresignedUrl(updatedCourse.file));
+
+    // Update the course data with the new poster key
+    updatedCourse.key = key;
+    updateCourse.file = null;
+
+    }
+
+    const { data } = await axios.put(`${server}/course/${updatedCourse._id}`, updatedCourse, config);
+
+    dispatch({ type: 'updateCourseSuccess', payload: data.message });
   } catch (error) {
     dispatch({
-      type: UPDATE_COURSE_FAIL,
+      type: 'updateCourseFail',
+      payload: error.response.data.message,
+    });
+  }
+};
+
+
+
+// edit lecture 
+export const editLecture = (courseId, moduleId, lectureId, title, description) => async (dispatch) => {
+  try {
+    const config = {
+      withCredentials: true,
+    };
+    dispatch({ type: 'editLectureRequest' });
+
+    const { data } = await axios.put(`${server}/course/${courseId}/modules/${moduleId}/lectures/${lectureId}`,{ title, description }, config);
+
+    dispatch({ type: 'editLectureSuccess', payload: data.message });
+  } catch (error) {
+    dispatch({
+      type: 'editLectureFail',
       payload: error.response.data.message,
     });
   }

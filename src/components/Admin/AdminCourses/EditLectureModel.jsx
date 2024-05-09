@@ -1,5 +1,3 @@
-// EditLectureModal.js
-
 import React, { useState } from 'react';
 import {
   Box,
@@ -13,6 +11,9 @@ import {
   ModalOverlay,
   Textarea,
 } from '@chakra-ui/react';
+import { useDispatch } from 'react-redux';
+import { getCourseModules } from '../../../redux/actions/course';
+import { editLecture } from '../../../redux/actions/admin';
 
 const EditLectureModal = ({
   isOpen,
@@ -20,12 +21,18 @@ const EditLectureModal = ({
   title: initialTitle,
   description: initialDescription,
   onUpdate,
+  courseId, 
+  moduleId,
+  lectureId,
 }) => {
   const [title, setTitle] = useState(initialTitle);
   const [description, setDescription] = useState(initialDescription);
+  const dispatch = useDispatch();
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     onUpdate(title, description);
+    await dispatch(editLecture(courseId, moduleId, lectureId, title, description));
+    dispatch(getCourseModules(courseId));
     onClose();
   };
 

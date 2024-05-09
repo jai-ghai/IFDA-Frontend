@@ -2,7 +2,7 @@ import { Avatar, Box, Button, Container, HStack, Heading, Stack, Text, VStack } 
 import React from 'react';
 import {Link} from 'react-router-dom';
 // import introVideo from './../../assests/videos/intro.mp4'
-import mainVideo  from "../../assests/videos/Final.mp4"
+// import mainVideo  from "../../assests/videos/Final.mp4"
 import { RiSecurePaymentFill } from 'react-icons/ri';
 import termsAndCondition from '../../assests/docs/termsAndCondition'
 
@@ -29,7 +29,7 @@ const VideoPlayer = () =>(
             controlsList='nodownload nofullscreen noremoteplayback'
             disablePictureInPicture
             disableRemotePlayback
-            src={mainVideo}>
+            src={'https://lmsvault.ifda.in/mainpage%2Fvideos%2FFinal.mp4'}>
             </video>
     </Box>
 )

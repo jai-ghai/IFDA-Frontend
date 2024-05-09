@@ -31,11 +31,14 @@ const CreateCourse = () => {
 
   const categories = [
     'Web development',
-    'Artificial Intellegence',
-    'Data Structure & Algorithm',
-    'App Development',
-    'Data Science',
-    'Game Development',
+    'Accounting',
+    'Programming',
+    'Digital Marketing',
+    'Multimedia & Design',
+    'Cyber security',
+    'Basic Computer',
+    'Stock market',
+    'Hardware and Networking'
   ];
 
   const changeImageHandler = e => {

@@ -52,7 +52,6 @@ export const courseReducer = createReducer(
       state.error = action.payload;
     },
 
-
     addToPlaylistRequest: state => {
       state.loading = true;
     },

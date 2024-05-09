@@ -97,6 +97,29 @@ export const adminReducer = createReducer(
       state.error = action.payload;
     },
 
+    createModuleRequest: state => {
+      state.loading = true;
+    },
+    createModuleSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    createModuleFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    deleteModuleRequest: (state) => {
+      state.loading = true;
+    },
+    deleteModuleSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    deleteModuleFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
     deleteLectureRequest: state => {
       state.loading = true;
     },
@@ -107,6 +130,54 @@ export const adminReducer = createReducer(
     deleteLectureFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
+    },
+
+    deleteModuleTestRequest: (state) => {
+      state.loading = true;
+      state.error = null;
+      state.message = '';
+    },
+    deleteModuleTestSuccess: (state, action) => {
+      state.loading = false;
+      state.error = null;
+      state.message = action.payload;
+    },
+    deleteModuleTestFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+      state.message = '';
+    },
+
+    editLectureRequest: (state) => {
+      state.loading = true;
+      state.error = null;
+      state.message = '';
+    },
+    editLectureSuccess: (state, action) => {
+      state.loading = false;
+      state.error = null;
+      state.message = action.payload;
+    },
+    editLectureFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+      state.message = '';
+    },
+
+    updateCourseRequest: (state) => {
+      state.loading = true;
+      state.error = null;
+      state.message = '';
+    },
+    updateCourseSuccess: (state, action) => {
+      state.loading = false;
+      state.error = null;
+      state.message = action.payload;
+    },
+    updateCourseFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+      state.message = '';
     },
     clearError: state => {
       state.error = null;

@@ -13,16 +13,19 @@ const UpdateCourse = () => {
   const [description, setDescription] = useState('');
   const [createdBy, setCreatedBy] = useState('');
   const [category, setCategory] = useState('');
-  const [image, setImage] = useState('');
+  const [file, setFile] = useState('');
   const [imagePrev, setImagePrev] = useState('');
 
   const categories = [
     'Web development',
-    'Artificial Intellegence',
-    'Data Structure & Algorithm',
-    'App Development',
-    'Data Science',
-    'Game Development',
+    'Accounting',
+    'Programming',
+    'Digital Marketing',
+    'Multimedia & Design',
+    'Cyber security',
+    'Basic Computer',
+    'Stock market',
+    'Hardware and Networking'
   ];
 
   const dispatch = useDispatch();
@@ -31,7 +34,6 @@ const UpdateCourse = () => {
 
   // Fetch courses when component mounts
   useEffect(() => {
-    // Fetch courses when component mounts
     dispatch(getAllCourses());
   }, [dispatch]);
 
@@ -56,7 +58,7 @@ const UpdateCourse = () => {
 
     reader.onloadend = () => {
       setImagePrev(reader.result);
-      setImage(file);
+      setFile(file);
     };
   };
 
@@ -68,7 +70,7 @@ const UpdateCourse = () => {
       description,
       createdBy,
       category,
-      // Add other fields as needed
+      file, // Add image to the updatedCourse object
     };
     dispatch(updateCourse(updatedCourse));
   };
@@ -134,7 +136,6 @@ const UpdateCourse = () => {
             </Select>
             <Input
               accept="image/*"
-              required
               type={'file'}
               focusBorderColor="purple.300"
               css={{

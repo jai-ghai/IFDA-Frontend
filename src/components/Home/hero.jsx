@@ -1,6 +1,6 @@
 import * as React from 'react';
 // import introVideo from "../../assests/videos/intro.mp4"
-import mainVideo  from "../../assests/videos/Final.mp4"
+// import mainVideo  from "../../assests/videos/Final.mp4"
 import {
   chakra,
   Container,
@@ -137,7 +137,7 @@ const MainVideo = (()=>{
             disablePictureInPicture
             disableRemotePlayback
             muted
-            src={mainVideo}>
+            src={'https://lmsvault.ifda.in/mainpage%2Fvideos%2FFinal.mp4'}>
             </video>
         </div>
     )

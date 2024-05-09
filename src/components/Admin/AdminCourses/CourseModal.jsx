@@ -225,8 +225,9 @@ import {
   VStack,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { getAllCourses } from '../../../redux/actions/course';
+import { getAllCourses, getCourseModules } from '../../../redux/actions/course';
 import EditLectureModal from './EditLectureModel';
+import { deleteModule } from '../../../redux/actions/admin';
 
 const CourseModal = ({
   isOpen,
@@ -274,15 +275,13 @@ const CourseModal = ({
     dispatch(getAllCourses());
   }, [dispatch]);
 
-  const handleModuleDelete = moduleId => {
-    // Display popup/modal for confirmation
-    // You can use Chakra UI Modal or any other modal library of your choice
-    // Set a state to store the moduleId to be deleted and display the popup
+  const handleModuleDelete = async (courseId, moduleId) => {
+    await dispatch(deleteModule(courseId, moduleId));
+    dispatch(getCourseModules(courseId));
   };
-  const handleTestDelete = moduleId => {
-    // Display popup/modal for confirmation
-    // You can use Chakra UI Modal or any other modal library of your choice
-    // Set a state to store the moduleId to be deleted and display the popup
+  const handleTestDelete = async (courseId, moduleId,testId) => {
+    await dispatch(deleteModule(courseId, moduleId, testId));
+    dispatch(getCourseModules(courseId));
   };
   
 
@@ -314,7 +313,8 @@ const CourseModal = ({
   <Box key={moduleIndex} position="relative">
     {/* Delete icon for module */}
     <Button
-      onClick={() => handleModuleDelete(module._id)} // Handler to display popup
+      onClick={() => handleModuleDelete(id,module._id)} // Handler to display popup
+      isLoading={loading}
       size="sm"
       colorScheme="red"
       variant="ghost"
@@ -338,6 +338,7 @@ const CourseModal = ({
         num={lectureIndex + 1}
         lectureId={lecture._id}
         courseId={id}
+        moduleId={module._id}
         deleteButtonHandler={deleteButtonHandler}
         loading={loading}
       />
@@ -346,6 +347,7 @@ const CourseModal = ({
     {module.tests.map((test, testIndex) => (
   <TestCard
     key={testIndex}
+    courseId={id}
     moduleName={module.title} // Pass the module name as props
     testId={test._id}
     moduleId={module._id}
@@ -363,7 +365,7 @@ const CourseModal = ({
             <Box>
               <form
                 onSubmit={e =>
-                  addLectureHandler(e, id, title, description, video, file, moduleId)
+                  addLectureHandler(e, id, title, description,file, moduleId)
                 }
               >
                 <VStack spacing={'4'}>
@@ -445,52 +447,13 @@ const CourseModal = ({
 
 export default CourseModal;
 
-// function VideoCard({
-//   title,
-//   description,
-//   num,
-//   lectureId,
-//   courseId,
-//   deleteButtonHandler,
-//   loading,
-// }) {
-//   return (
-//     <Stack
-//       direction={['column', 'row']}
-//       my="8"
-//       borderRadius={'lg'}
-//       boxShadow={'0 0 10px rgba(107,70,193,0.5)'}
-//       justifyContent={['flex-start', 'space-between']}
-//       p={['4', '8']}
-//     >
-//       <Box>
-//         <Heading size={'sm'} children={`#${num} ${title}`} />
-//         <Text children={description} />
-//       </Box>
 
-//       <Button
-//         isLoading={loading}
-//         color={'purple.600'}
-//         onClick={() => deleteButtonHandler(courseId, lectureId)}
-//       >
-//         <RiDeleteBin7Fill />
-//       </Button>
-
-//       <Button
-//         isLoading={loading}
-//         color={'purple.600'}
-//         onClick={() => deleteButtonHandler(courseId, lectureId)}
-//       >
-//         <RiDeleteBin7Fill />
-//       </Button>
-//     </Stack>
-//   );
-// }
 
 function VideoCard({
   title,
   description,
   num,
+  moduleId,
   lectureId,
   courseId,
   deleteButtonHandler,
@@ -538,6 +501,11 @@ function VideoCard({
       </Stack>
 
       <EditLectureModal
+        moduleId={moduleId} 
+        lectureId={lectureId}
+        courseId={courseId}
+        deleteButtonHandler={deleteButtonHandler}
+        loading={loading}
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         title={title}
@@ -554,6 +522,7 @@ function TestCard({
   moduleName,
   testId,
   moduleId,
+  courseId,
   deleteButtonHandler,
   loading,
 }) {
@@ -579,7 +548,7 @@ function TestCard({
          isLoading={loading}
           color={'purple.600'}
         size="sm"
-        onClick={() => deleteButtonHandler(moduleId, testId)}
+        onClick={() => deleteButtonHandler(courseId,moduleId, testId)}
       >
         <RiDeleteBin7Fill />
       </Button>
@@ -587,3 +556,46 @@ function TestCard({
   );
 }
 
+
+
+// function VideoCard({
+//   title,
+//   description,
+//   num,
+//   lectureId,
+//   courseId,
+//   deleteButtonHandler,
+//   loading,
+// }) {
+//   return (
+//     <Stack
+//       direction={['column', 'row']}
+//       my="8"
+//       borderRadius={'lg'}
+//       boxShadow={'0 0 10px rgba(107,70,193,0.5)'}
+//       justifyContent={['flex-start', 'space-between']}
+//       p={['4', '8']}
+//     >
+//       <Box>
+//         <Heading size={'sm'} children={`#${num} ${title}`} />
+//         <Text children={description} />
+//       </Box>
+
+//       <Button
+//         isLoading={loading}
+//         color={'purple.600'}
+//         onClick={() => deleteButtonHandler(courseId, lectureId)}
+//       >
+//         <RiDeleteBin7Fill />
+//       </Button>
+
+//       <Button
+//         isLoading={loading}
+//         color={'purple.600'}
+//         onClick={() => deleteButtonHandler(courseId, lectureId)}
+//       >
+//         <RiDeleteBin7Fill />
+//       </Button>
+//     </Stack>
+//   );
+// }
