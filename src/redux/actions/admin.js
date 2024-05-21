@@ -326,6 +326,26 @@ export const deleteModule = (courseId, moduleId) => async (dispatch) => {
 };
 
 
+// module delete test 
+export const deleteModuleTest = (courseId, moduleId, testId) => async (dispatch) => {
+  try {
+    const config = {
+      withCredentials: true,
+    };
+    dispatch({ type: 'deleteModuleTestRequest' });
+
+    const { data } = await axios.delete(`${server}/course/${courseId}/${moduleId}/${testId}`, config);
+
+    dispatch({ type: 'deleteModuleTestSuccess', payload: data.message });
+  } catch (error) {
+    dispatch({
+      type: 'deleteModuleTestFail',
+      payload: error.response.data.message,
+    });
+  }
+};
+
+
 
 
 
@@ -388,14 +408,20 @@ export const updateCourse = (updatedCourse) => async (dispatch) => {
 
 
 // edit lecture 
-export const editLecture = (courseId, moduleId, lectureId, title, description) => async (dispatch) => {
+export const editLecture = (courseId, moduleId, lectureId, formData) => async (dispatch) => {
   try {
     const config = {
       withCredentials: true,
     };
+    console.log(formData);
     dispatch({ type: 'editLectureRequest' });
 
-    const { data } = await axios.put(`${server}/course/${courseId}/modules/${moduleId}/lectures/${lectureId}`,{ title, description }, config);
+    if(formData.file != null){
+      const key = await dispatch(requestPresignedUrl(formData.file));
+      formData.key = key;
+      formData.file = null;
+  }
+    const { data } = await axios.put(`${server}/course/${courseId}/modules/${moduleId}/lectures/${lectureId}`,formData, config);
 
     dispatch({ type: 'editLectureSuccess', payload: data.message });
   } catch (error) {
@@ -405,3 +431,7 @@ export const editLecture = (courseId, moduleId, lectureId, title, description) =
     });
   }
 };
+
+
+// test delete
+

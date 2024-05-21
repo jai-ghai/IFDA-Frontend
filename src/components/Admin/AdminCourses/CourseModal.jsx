@@ -227,7 +227,7 @@ import {
 } from '@chakra-ui/react';
 import { getAllCourses, getCourseModules } from '../../../redux/actions/course';
 import EditLectureModal from './EditLectureModel';
-import { deleteModule } from '../../../redux/actions/admin';
+import { deleteModule, deleteModuleTest } from '../../../redux/actions/admin';
 
 const CourseModal = ({
   isOpen,
@@ -280,7 +280,7 @@ const CourseModal = ({
     dispatch(getCourseModules(courseId));
   };
   const handleTestDelete = async (courseId, moduleId,testId) => {
-    await dispatch(deleteModule(courseId, moduleId, testId));
+    await dispatch(deleteModuleTest(courseId, moduleId, testId));
     dispatch(getCourseModules(courseId));
   };
   

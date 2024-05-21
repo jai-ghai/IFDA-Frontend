@@ -61,30 +61,24 @@ export const getCourseModules = id => async dispatch => {
 // };
 
 
-export const submitTestScore = (userId, moduleId, score) => async (dispatch) => {
+export const submitTestScore = (userId, result) => async (dispatch) => {
   // Dispatch the request action
   dispatch({ type: 'submitTestRequest' });
-  console.log(userId, moduleId, score);
+
   try {
     // Set up the request configuration
     const config = {
       headers: {
-        'Content-Type': 'application/json', // Change content type to JSON
+        'Content-Type': 'application/json',
       },
       withCredentials: true,
     };
 
-    // Prepare the request body
-    const requestBody = {
-      moduleId,
-      score,
-    };
-
     // Make the POST request to submit the test score
     const response = await axios.post(
-      `${server}/user/${userId}/test-score`, // Server endpoint URL
-      requestBody, // Request body containing module ID and score
-      config // Request configuration
+      `${server}/user/${userId}/test-score`,
+      result,
+      config
     );
 
     // Extract the data from the response
@@ -95,11 +89,15 @@ export const submitTestScore = (userId, moduleId, score) => async (dispatch) => 
       type: 'submitTestSuccess',
       payload: data,
     });
+
+    return data;
   } catch (error) {
     // If an error occurs, dispatch failure action with the error message
     dispatch({
       type: 'submitTestFail',
-      payload: error.response.data.message, // Assuming the error message is provided in the response data
+      payload: error.response.data.message,
     });
+
+    throw new Error(error.response.data.message);
   }
 };
